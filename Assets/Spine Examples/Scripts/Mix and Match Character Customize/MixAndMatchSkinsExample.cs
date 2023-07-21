@@ -133,7 +133,7 @@ namespace Spine.Unity.Examples {
 			UpdateCombinedSkin();
 		}
 
-		public void OptimizeSkin () {
+		/*public void OptimizeSkin () {
 			// Create a repacked skin.
 			Skin previousSkin = skeletonAnimation.Skeleton.Skin;
 			// Note: materials and textures returned by GetRepackedSkin() behave like 'new Texture2D()' and need to be destroyed
@@ -156,7 +156,7 @@ namespace Spine.Unity.Examples {
 			// and will likely cause a spike in the framerate.
 			AtlasUtilities.ClearCache();
 			Resources.UnloadUnusedAssets();
-		}
+		}*/
 
 		void UpdateCharacterSkin () {
 			Skeleton skeleton = skeletonAnimation.Skeleton;
