@@ -13,8 +13,8 @@ public class Master : MonoBehaviour
 
     [HideInInspector] public Rigidbody2D body;
     [HideInInspector] public Collider2D pushbox;
-    [HideInInspector] public byte onAirTime;
-    [HideInInspector] public bool grounded;
+    public byte onAirTime;
+    public bool grounded;
     [HideInInspector] public bool facingRight = true;
     public LayerMask grounderIgnore;
     [Header("Motions")]

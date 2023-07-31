@@ -128,6 +128,10 @@ public class CharacterAnimator : MonoBehaviour
         }
         #endregion
 
+        #region Falls
+        if (!master.grounded && !a7 && !a8) SetNewState(States.fall, 0);
+        #endregion
+
         #region Jumps
         bool ct = master.onAirTime < master.coyoteTime;
         if (master.grounded)
@@ -146,10 +150,9 @@ public class CharacterAnimator : MonoBehaviour
         }
         else
         {
-            if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
             if (ct)
             {
-                /*if (Mathf.Abs(master.inputs.myLeftStick.x) > 0.2f)
+                if (Mathf.Abs(master.inputs.myLeftStick.x) > 0.2f)
                 {
                     if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
                     if (master.inputs.cross_tick) master.currentJump += 1;
@@ -158,19 +161,15 @@ public class CharacterAnimator : MonoBehaviour
                 {
                     if (master.inputs.cross_tick) SetNewState(States.jumpUp, 0);
                     if (master.inputs.cross_tick) master.currentJump += 1;
-                }*/
+                }
             }
         }
         #endregion
 
-        #region Falls
-        if (!master.grounded && !a7 && !a8) SetNewState(States.fall, 0);
-        #endregion
-
         #region Lands
         if ( ( ( master.onAirTime > 5 && ( a7 || a8 ) ) || a9 ) && master.grounded ) SetNewState(States.land, 0);
+        if ( ( ( master.onAirTime > 5 && ( a7 || a8 ) ) || a9 ) && master.grounded ) master.currentJump = 0;
         if (master.grounded) master.onAirTime = 0;
-        if (master.grounded) master.currentJump = 0;
         #endregion
     }
 }

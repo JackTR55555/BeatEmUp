@@ -328,7 +328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252406888}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.503, y: 12.47, z: 0}
+  m_LocalPosition: {x: 22.503, y: 5.88, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1010,11 +1010,11 @@ MonoBehaviour:
     m_Bits: 8
   moveSpeed: 30
   jumpSpeed: 70
-  coyoteTime: 50
+  coyoteTime: 10
   normalGravity: 20
   shortGravity: 40
   maxFallSpeed: -60
-  maxJumps: 0
+  maxJumps: 2
   currentJump: 0
   activeDefenseCore: 0
   DefenseCores:

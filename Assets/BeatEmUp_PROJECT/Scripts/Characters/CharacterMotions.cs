@@ -21,11 +21,20 @@ public class CharacterMotions : MonoBehaviour
 
     public void MasterJump()
     {
-        if (!master.animator.a7 && !master.animator.a8)
+        bool ct = master.onAirTime < master.coyoteTime;
+
+        if (master.currentJump < master.maxJumps)
         {
-            if (!master.animator.a9)
+            if (master.grounded)
             {
                 if (master.inputs.cross_tick) master.body.velocity = new Vector2(master.body.velocity.x, master.jumpSpeed);
+            }
+            else
+            {
+                if ( ct )
+                {
+                    if (master.inputs.cross_tick) master.body.velocity = new Vector2(master.body.velocity.x, master.jumpSpeed);
+                }
             }
         }
     }
