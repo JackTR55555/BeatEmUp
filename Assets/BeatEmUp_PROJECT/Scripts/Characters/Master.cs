@@ -1,3 +1,4 @@
+using Spine;
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,12 +19,13 @@ public class Master : MonoBehaviour
     [HideInInspector] public bool facingRight = true;
     public LayerMask grounderIgnore;
     [Header("Motions")]
-    public float moveSpeed;
-    public float jumpSpeed;
+    public byte moveSpeed;
+    public byte dashSpeed;
+    public byte jumpSpeed;
     public byte coyoteTime;
     public byte normalGravity;
     public byte shortGravity;
-    public short maxFallSpeed;
+    public byte maxFallSpeed;
     public byte maxJumps;
     public byte currentJump;
     [Header("Cores")]
@@ -43,6 +45,12 @@ public class Master : MonoBehaviour
         return b;
     }
 
+    void HandleAnimationStateEvent(TrackEntry trackEntry, Spine.Event e)
+    {
+        bool jumpEventChecked = (motions.jumpEventData == e.Data);
+        if (jumpEventChecked) motions.AnimationEventJump();
+    }
+
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -58,6 +66,9 @@ public class Master : MonoBehaviour
         animator.master = this;
         motions.master = this;
         skinManager.master = this;
+
+        motions.jumpEventData = skeletonAnimation.Skeleton.Data.FindEvent(motions.jumpEvent);
+        skeletonAnimation.AnimationState.Event += HandleAnimationStateEvent;
     }
 
     void Update()
@@ -68,7 +79,6 @@ public class Master : MonoBehaviour
         grounded = CheckGround();
         skinManager.SetSkin();
         animator.Animate();
-        motions.MasterJump();
     }
 
     void FixedUpdate()

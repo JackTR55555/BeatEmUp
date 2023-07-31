@@ -816,6 +816,10 @@ MonoBehaviour:
   cross_hold: 0
   triangle_tick: 0
   triangle_hold: 0
+  circle_tick: 0
+  circle_hold: 0
+  square_tick: 0
+  square_hold: 0
 --- !u!1 &1349748661
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,7 +890,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: In-Game-Animations/Idles/idle-neutral
+  _animationName: In-Game-Animations/Idles/idle-action
   loop: 1
   timeScale: 1
 --- !u!23 &1349748664
@@ -970,6 +974,7 @@ MonoBehaviour:
   a9: 0
   a10: 0
   a11: 0
+  a12: 0
   actionIdleToNeutralIdle: In-Game-Animations/Idles/action-to-neutral
   actionIdleToRun: In-Game-Animations/Basic Movement/idle-to-run
   runToActionIdle: In-Game-Animations/Basic Movement/Run-to-idle-action
@@ -982,6 +987,11 @@ MonoBehaviour:
   jumpFw: In-Game-Animations/Jump/Jump-forward
   fall: In-Game-Animations/Jump/Fall
   land: In-Game-Animations/Jump/Land
+  dash: In-Game-Animations/Basic Movement/Dash
+  swordGroundCombo1: In-Game-Animations/Weapon-Animations/Bleedingedge/Basic-1
+  swordGroundCombo2: In-Game-Animations/Weapon-Animations/Bleedingedge/Basic-2
+  swordGroundCombo3: In-Game-Animations/Weapon-Animations/Bleedingedge/Basic-3
+  swordGroundCombo4: In-Game-Animations/Weapon-Animations/Bleedingedge/Basic-4
   currentState: 0
 --- !u!114 &1349748667
 MonoBehaviour:
@@ -1009,11 +1019,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   moveSpeed: 30
-  jumpSpeed: 70
+  dashSpeed: 60
+  jumpSpeed: 130
   coyoteTime: 10
-  normalGravity: 20
-  shortGravity: 40
-  maxFallSpeed: -60
+  normalGravity: 50
+  shortGravity: 110
+  maxFallSpeed: 60
   maxJumps: 2
   currentJump: 0
   activeDefenseCore: 0
@@ -1036,7 +1047,7 @@ MonoBehaviour:
     skinToUse: In-Game-Skins/02-Function-Slot/02-Gigablaster
   - Owned: 0
     skinToUse: In-Game-Skins/02-Function-Slot/03-Bluebeast
-  activeAttackCore: 0
+  activeAttackCore: 1
   AttackCores:
   - Owned: 0
     skinToUse: In-Game-Skins/01-Attack-Slot/00-Default
@@ -1148,6 +1159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   master: {fileID: 0}
+  jumpEvent: VFX-events/applyJumpForce
 --- !u!1 &1635382933
 GameObject:
   m_ObjectHideFlags: 0

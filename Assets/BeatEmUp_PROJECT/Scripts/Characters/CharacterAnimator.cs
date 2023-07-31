@@ -18,6 +18,7 @@ public class CharacterAnimator : MonoBehaviour
     [HideInInspector] public bool a9;
     [HideInInspector] public bool a10;
     [HideInInspector] public bool a11;
+    [HideInInspector] public bool a12;
     #endregion
 
     [Header("Transitions")]
@@ -25,7 +26,7 @@ public class CharacterAnimator : MonoBehaviour
     [SpineAnimation] public string actionIdleToRun;
     [SpineAnimation] public string runToActionIdle;
     [SpineAnimation] public string landToRun;
-    [Header("States")]
+    [Header("Animations")]
     [SpineAnimation] public string neutralIdle;
     [SpineAnimation] public string actionIdle;
     [SpineAnimation] public string walk;
@@ -34,6 +35,11 @@ public class CharacterAnimator : MonoBehaviour
     [SpineAnimation] public string jumpFw;
     [SpineAnimation] public string fall;
     [SpineAnimation] public string land;
+    [SpineAnimation] public string dash;
+    [SpineAnimation] public string swordGroundCombo1;
+    [SpineAnimation] public string swordGroundCombo2;
+    [SpineAnimation] public string swordGroundCombo3;
+    [SpineAnimation] public string swordGroundCombo4;
 
     [Space(20)]
     public States currentState = States.neutralIdle;
@@ -45,7 +51,7 @@ public class CharacterAnimator : MonoBehaviour
         switch (toState)
         {
             case States.neutralIdle:
-                if (currentState == States.run)
+                if (currentState == States.run || currentState == States.dash)
                 {
                     master.skeletonAnimation.AnimationState.SetAnimation(layer, runToActionIdle, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 0);
@@ -97,31 +103,45 @@ public class CharacterAnimator : MonoBehaviour
             case States.land:
                 master.skeletonAnimation.AnimationState.SetAnimation(layer, land, false);
                 break;
+            case States.dash:
+                master.skeletonAnimation.AnimationState.SetAnimation(layer, dash, false);
+                master.skeletonAnimation.AnimationState.AddAnimation(layer, runToActionIdle, true, 0);
+                break;
             default:
                 break;
         }
         currentState = toState;
     }
 
-    public void Animate()
+    void RecalculateFacing()
     {
-        a1 = master.skeletonAnimation.AnimationState.ToString() == master.animator.actionIdle;
-        a2 = master.skeletonAnimation.AnimationState.ToString() == master.animator.actionIdleToRun;
-        a3 = master.skeletonAnimation.AnimationState.ToString() == master.animator.neutralIdle;
-        a4 = master.skeletonAnimation.AnimationState.ToString() == master.animator.run;
-        a5 = master.skeletonAnimation.AnimationState.ToString() == master.animator.runToActionIdle;
-        a6 = master.skeletonAnimation.AnimationState.ToString() == master.animator.actionIdleToNeutralIdle;
-        a7 = master.skeletonAnimation.AnimationState.ToString() == master.animator.jumpUp;
-        a8 = master.skeletonAnimation.AnimationState.ToString() == master.animator.jumpFw;
-        a9 = master.skeletonAnimation.AnimationState.ToString() == master.animator.fall;
-        a10 = master.skeletonAnimation.AnimationState.ToString() == master.animator.land;
-        a11 = master.skeletonAnimation.AnimationState.ToString() == master.animator.landToRun;
-
         if (master.inputs.myLeftStick.x > 0.2f) master.facingRight = true;
         if (master.inputs.myLeftStick.x < -0.2f) master.facingRight = false;
+    }
 
-        #region Run
-        if (!a7 && !a8 && !a9)
+    public void Animate()
+    {
+        #region Current Animation
+        a1 = master.skeletonAnimation.AnimationState.ToString() == actionIdle;
+        a2 = master.skeletonAnimation.AnimationState.ToString() == actionIdleToRun;
+        a3 = master.skeletonAnimation.AnimationState.ToString() == neutralIdle;
+        a4 = master.skeletonAnimation.AnimationState.ToString() == run;
+        a5 = master.skeletonAnimation.AnimationState.ToString() == runToActionIdle;
+        a6 = master.skeletonAnimation.AnimationState.ToString() == actionIdleToNeutralIdle;
+        a7 = master.skeletonAnimation.AnimationState.ToString() == jumpUp;
+        a8 = master.skeletonAnimation.AnimationState.ToString() == jumpFw;
+        a9 = master.skeletonAnimation.AnimationState.ToString() == fall;
+        a10 = master.skeletonAnimation.AnimationState.ToString() == land;
+        a11 = master.skeletonAnimation.AnimationState.ToString() == landToRun;
+        a12 = master.skeletonAnimation.AnimationState.ToString() == dash;
+        #endregion
+
+        #region Facing
+        if (!a12) RecalculateFacing();
+        #endregion
+
+        #region Run & Idle
+        if (!a7 && !a8 && !a9 && !a12)
         {
             if (Mathf.Abs(master.inputs.myLeftStick.x) > 0.2f) SetNewState(States.run, 0);
             if (Mathf.Abs(master.inputs.myLeftStick.x) <= 0.2f) SetNewState(States.neutralIdle, 0);
@@ -170,6 +190,10 @@ public class CharacterAnimator : MonoBehaviour
         if ( ( ( master.onAirTime > 5 && ( a7 || a8 ) ) || a9 ) && master.grounded ) SetNewState(States.land, 0);
         if ( ( ( master.onAirTime > 5 && ( a7 || a8 ) ) || a9 ) && master.grounded ) master.currentJump = 0;
         if (master.grounded) master.onAirTime = 0;
+        #endregion
+
+        #region Dash
+        if (master.inputs.circle_tick) SetNewState(States.dash, 0);
         #endregion
     }
 }

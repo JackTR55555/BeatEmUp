@@ -14,6 +14,10 @@ public class Inputs : MonoBehaviour
     public bool cross_hold;
     public bool triangle_tick;
     public bool triangle_hold;
+    public bool circle_tick;
+    public bool circle_hold;
+    public bool square_tick;
+    public bool square_hold;
 
     void SetInputDevice()
     {
@@ -70,6 +74,10 @@ public class Inputs : MonoBehaviour
             cross_hold = myPad.buttonSouth.isPressed;
             triangle_tick = myPad.buttonNorth.wasPressedThisFrame;
             triangle_hold = myPad.buttonNorth.isPressed;
+            circle_tick = myPad.buttonEast.wasPressedThisFrame;
+            circle_hold = myPad.buttonEast.isPressed;
+            square_tick = myPad.buttonWest.wasPressedThisFrame;
+            square_hold = myPad.buttonWest.isPressed;
         }
         else
         {
