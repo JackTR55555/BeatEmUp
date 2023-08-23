@@ -23,6 +23,10 @@ MonoBehaviour:
     additiveMaterials:
     - pageName: Axel-gamerig.png
       material: {fileID: 2100000, guid: bc349a795dc0cc244956399f374abbe2, type: 2}
+    - pageName: Axel-gamerig_3.png
+      material: {fileID: 2100000, guid: 21394aa44cdfb1e4faaa02e1de8a7814, type: 2}
+    - pageName: Axel-gamerig_2.png
+      material: {fileID: 2100000, guid: a22906b9aa9a48f40a1819fb0d9756df, type: 2}
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []
