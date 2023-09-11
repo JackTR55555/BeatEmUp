@@ -1,0 +1,108 @@
+Charge-Shot.png
+size:4024,3752
+filter:Linear,Linear
+pma:true
+Action-line
+bounds:2395,534,945,70
+offsets:59,14,1040,116
+Big last-1
+bounds:1187,105,2847,530
+offsets:19,18,2867,566
+rotate:90
+Big last-10
+bounds:899,4,1589,89
+offsets:2,2,1592,92
+Big last-2
+bounds:623,698,2871,561
+offsets:24,24,2896,609
+rotate:90
+Big last-3
+bounds:3,668,2901,617
+offsets:33,32,2935,681
+rotate:90
+Big last-4
+bounds:1187,3166,2829,403
+offsets:12,15,2842,430
+Big last-5
+bounds:1720,150,2802,299
+offsets:12,9,2815,320
+rotate:90
+Big last-6
+bounds:2022,162,2790,213
+offsets:22,23,2813,262
+rotate:90
+Big last-7
+bounds:1187,2955,2818,208
+offsets:22,27,2841,244
+Big last-8
+bounds:2238,497,2455,154
+offsets:23,17,2483,175
+rotate:90
+Big last-9
+bounds:2395,607,2345,148
+offsets:13,24,2362,190
+rotate:90
+Big-blast-blast
+bounds:607,96,374,569
+offsets:36,5,482,580
+Blast-outer-1
+bounds:3373,1155,425,450
+offsets:2,1,429,453
+rotate:90
+Blast-outer-2
+bounds:3373,715,432,437
+offsets:2,2,436,441
+Blast-outer-3
+bounds:3343,1583,423,451
+offsets:2,1,427,453
+rotate:90
+Blast-outer-4
+bounds:3343,2009,444,460
+offsets:1,2,447,463
+rotate:90
+Charge-elec-1
+bounds:607,3,289,90
+offsets:3,3,296,97
+Charge-elec-2
+bounds:3797,1693,302,136
+offsets:4,4,310,143
+rotate:90
+Charge-elec-3
+bounds:984,385,310,144
+offsets:3,4,317,152
+rotate:90
+Charge-elec-4
+bounds:2491,8,300,85
+offsets:6,4,312,95
+Color-flare
+bounds:2546,649,931,824
+offsets:4,22,939,856
+rotate:90
+Energy-charge-1
+bounds:2238,96,398,398
+offsets:3,3,404,403
+Energy-charge-2
+bounds:2546,2052,398,398
+offsets:3,3,404,403
+Energy-charge-3
+bounds:2639,99,448,432
+offsets:21,21,490,478
+Energy-charge-blow
+bounds:3,63,602,601
+offsets:49,50,700,698
+rotate:90
+Energy-layer-1
+bounds:3343,2456,674,496
+offsets:2,2,679,500
+Energy-layer-2
+bounds:2546,2453,782,499
+offsets:10,2,832,503
+Energy-layer-3
+bounds:3090,35,907,496
+offsets:26,2,980,500
+Flare
+bounds:3806,1998,212,455
+offsets:19,6,246,468
+Lens-flare
+bounds:3,3572,3980,177
+offsets:21,24,4096,225
