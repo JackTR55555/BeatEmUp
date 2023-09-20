@@ -42,10 +42,19 @@ public class CharacterMotions : MonoBehaviour
 
         if (master.animator.a7 || master.animator.a8)
         {
-            if (master.onAirTime <= 0.2f)
+            if (master.onAirTime <= 0.4f)
             {
-                if (!master.inputs.cross_hold && master.onAirTime > 0) gravity = master.shortGravity;
-
+                if (master.onAirTime > 0)
+                {
+                    if (!master.inputs.cross_hold) gravity = master.shortGravity;
+                }
+                else
+                {
+                    gravity = master.normalGravity;
+                }
+            }
+            else
+            {
                 if (master.inputs.cross_hold) gravity = master.normalGravity;
             }
         }

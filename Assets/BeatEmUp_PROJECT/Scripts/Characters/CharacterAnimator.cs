@@ -163,15 +163,16 @@ public class CharacterAnimator : MonoBehaviour
         bool ct = master.onAirTime < master.coyoteTime && a9;
         if (master.grounded)
         {
-            if (a1 || a3 || a5 || a6 || a10)
+            if (a1 || a2 || a3 || a4 || a5 || a6 || a11 || a10 || a12)
             {
-                if (master.inputs.cross_tick) SetNewState(States.jumpUp, 0);
-                if (master.inputs.cross_tick) master.currentJump += 1;
-            }
-
-            if (a2 || a4 || a11 || a5)
-            {
-                if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
+                if (Mathf.Abs(master.inputs.myLeftStick.x) > 0.2f)
+                {
+                    if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
+                }
+                else
+                {
+                    if (master.inputs.cross_tick) SetNewState(States.jumpUp, 0);
+                }
                 if (master.inputs.cross_tick) master.currentJump += 1;
             }
         }
@@ -182,13 +183,12 @@ public class CharacterAnimator : MonoBehaviour
                 if (Mathf.Abs(master.inputs.myLeftStick.x) > 0.2f)
                 {
                     if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
-                    if (master.inputs.cross_tick) master.currentJump += 1;
                 }
                 else
                 {
                     if (master.inputs.cross_tick) SetNewState(States.jumpUp, 0);
-                    if (master.inputs.cross_tick) master.currentJump += 1;
                 }
+                if (master.inputs.cross_tick) master.currentJump += 1;
             }
         }
         #endregion
