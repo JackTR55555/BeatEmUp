@@ -12,6 +12,7 @@ public class Master : MonoBehaviour
     [HideInInspector] public CharacterAnimator animator;
     [HideInInspector] public CharacterMotions motions;
     [HideInInspector] public Inputs inputs;
+    [HideInInspector] public CameraShaker camShaker;
 
     [HideInInspector] public Rigidbody2D body;
     [HideInInspector] public Collider2D pushbox;
@@ -32,10 +33,10 @@ public class Master : MonoBehaviour
     [Range(1, 2)] public float airMovilityMultiply;
     [Header("Cores")]
     public int activeDefenseCore;
-    public CoreContainer[] DefenseCores;
     public int activeFunctionCore;
-    public CoreContainer[] FunctionCores;
     public int activeAttackCore;
+    public CoreContainer[] DefenseCores;
+    public CoreContainer[] FunctionCores;
     public CoreContainer[] AttackCores;
 
     bool CheckGround()
@@ -52,10 +53,26 @@ public class Master : MonoBehaviour
         //Jump
         bool jumpEventChecked = (motions.jumpEventData == e.Data);
         if (jumpEventChecked) motions.MasterJump();
+        //Attack Cores
+        foreach (var item in AttackCores)
+        {
+            foreach (var item2 in item.anims)
+            {
+                item2.event1Triggered = item2.event1Data == e.Data;
+            }
+        }
+        foreach (var item in AttackCores[activeAttackCore].anims)
+        {
+            if (item.event1Triggered)
+            {
+                camShaker.Shake(4, 0.1f);
+            }
+        }
     }
 
     private void Start()
     {
+        camShaker = FindObjectOfType<CameraShaker>();
         inputs = FindObjectOfType<Inputs>();
         skinManager = GetComponent<SkinManager>();
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -68,7 +85,16 @@ public class Master : MonoBehaviour
         motions.master = this;
         skinManager.master = this;
 
+        //Attack Cores
+        foreach (var item in AttackCores)
+        {
+            foreach (var item2 in item.anims)
+            {
+                item2.event1Data = skeletonAnimation.skeleton.Data.FindEvent(item2.event1);
+            }
+        }
         motions.jumpEventData = skeletonAnimation.Skeleton.Data.FindEvent(motions.jumpEvent);
+        
         skeletonAnimation.AnimationState.Event += HandleAnimationStateEvent;
     }
 
@@ -76,6 +102,7 @@ public class Master : MonoBehaviour
     {
         skeletonAnimation.skeleton.ScaleX = facingRight ? 1 : -1;
         onAirTime = onAirTime >= 225 ? 225 : grounded ? onAirTime : onAirTime += 1 * Time.deltaTime;
+        if (grounded) onAirTime = 0;
 
         grounded = CheckGround();
         skinManager.SetSkin();
@@ -87,16 +114,22 @@ public class Master : MonoBehaviour
         motions.MasterMoveCharacter();
         motions.MasterHandleGravity();
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(pushbox.bounds.center, pushbox.bounds.size);
-    }
 }
 [System.Serializable]
 public struct CoreContainer
 {
+    public string coreName;
     public bool Owned;
     [SpineSkin] public string skinToUse;
+    public CoreAnims[] anims;
+}
+[System.Serializable]
+public class CoreAnims
+{
+    [SpineAnimation] public string anim;
+    public float animationTime;
+    [SpineEvent(dataField: "skeletonAnimation", fallbackToTextField: true)]
+    public string event1;
+    public Spine.EventData event1Data;
+    public bool event1Triggered;
 }
