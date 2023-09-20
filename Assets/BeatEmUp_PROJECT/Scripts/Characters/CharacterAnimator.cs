@@ -51,9 +51,14 @@ public class CharacterAnimator : MonoBehaviour
         switch (toState)
         {
             case States.neutralIdle:
-                if (currentState == States.run || currentState == States.dash)
+                if (currentState == States.run)
                 {
                     master.skeletonAnimation.AnimationState.SetAnimation(layer, runToActionIdle, false);
+                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 0);
+                    master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
+                }
+                else if (currentState == States.dash)
+                {
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 0);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
                 }
@@ -83,10 +88,14 @@ public class CharacterAnimator : MonoBehaviour
                     master.skeletonAnimation.AnimationState.SetAnimation(layer, landToRun, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, run, true, 0);
                 }
-                else
+                else if (currentState == States.actionIdle)
                 {
                     master.skeletonAnimation.AnimationState.SetAnimation(layer, actionIdleToRun, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, run, true, 0);
+                }
+                else
+                {
+                    master.skeletonAnimation.AnimationState.SetAnimation(layer, run, true);
                 }
                 break;
             case States.jumpUp:
@@ -121,20 +130,18 @@ public class CharacterAnimator : MonoBehaviour
 
     public void Animate()
     {
-        #region Current Animation
-        a1 = master.skeletonAnimation.AnimationState.ToString() == actionIdle;
-        a2 = master.skeletonAnimation.AnimationState.ToString() == actionIdleToRun;
-        a3 = master.skeletonAnimation.AnimationState.ToString() == neutralIdle;
-        a4 = master.skeletonAnimation.AnimationState.ToString() == run;
-        a5 = master.skeletonAnimation.AnimationState.ToString() == runToActionIdle;
-        a6 = master.skeletonAnimation.AnimationState.ToString() == actionIdleToNeutralIdle;
-        a7 = master.skeletonAnimation.AnimationState.ToString() == jumpUp;
-        a8 = master.skeletonAnimation.AnimationState.ToString() == jumpFw;
-        a9 = master.skeletonAnimation.AnimationState.ToString() == fall;
-        a10 = master.skeletonAnimation.AnimationState.ToString() == land;
-        a11 = master.skeletonAnimation.AnimationState.ToString() == landToRun;
-        a12 = master.skeletonAnimation.AnimationState.ToString() == dash;
-        #endregion
+        a1 = master.skeletonAnimation.AnimationState.ToString()     == actionIdle;
+        a2 = master.skeletonAnimation.AnimationState.ToString()     == actionIdleToRun;
+        a3 = master.skeletonAnimation.AnimationState.ToString()     == neutralIdle;
+        a4 = master.skeletonAnimation.AnimationState.ToString()     == run;
+        a5 = master.skeletonAnimation.AnimationState.ToString()     == runToActionIdle;
+        a6 = master.skeletonAnimation.AnimationState.ToString()     == actionIdleToNeutralIdle;
+        a7 = master.skeletonAnimation.AnimationState.ToString()     == jumpUp;
+        a8 = master.skeletonAnimation.AnimationState.ToString()     == jumpFw;
+        a9 = master.skeletonAnimation.AnimationState.ToString()     == fall;
+        a10 = master.skeletonAnimation.AnimationState.ToString()    == land;
+        a11 = master.skeletonAnimation.AnimationState.ToString()    == landToRun;
+        a12 = master.skeletonAnimation.AnimationState.ToString()    == dash;
 
         #region Facing
         if (!a12) RecalculateFacing();
@@ -153,7 +160,7 @@ public class CharacterAnimator : MonoBehaviour
         #endregion
 
         #region Jumps
-        bool ct = master.onAirTime < master.coyoteTime;
+        bool ct = master.onAirTime < master.coyoteTime && a9;
         if (master.grounded)
         {
             if (a1 || a3 || a5 || a6 || a10)
@@ -162,7 +169,7 @@ public class CharacterAnimator : MonoBehaviour
                 if (master.inputs.cross_tick) master.currentJump += 1;
             }
 
-            if (a2 || a4 || a11)
+            if (a2 || a4 || a11 || a5)
             {
                 if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
                 if (master.inputs.cross_tick) master.currentJump += 1;
@@ -187,13 +194,16 @@ public class CharacterAnimator : MonoBehaviour
         #endregion
 
         #region Lands
-        if ( ( ( master.onAirTime > 5 && ( a7 || a8 ) ) || a9 ) && master.grounded ) SetNewState(States.land, 0);
-        if ( ( ( master.onAirTime > 5 && ( a7 || a8 ) ) || a9 ) && master.grounded ) master.currentJump = 0;
+        if ( ( ( master.onAirTime > 0.05f && ( a7 || a8 ) ) || a9 ) && master.grounded ) SetNewState(States.land, 0);
+        if ( ( ( master.onAirTime > 0.05f && ( a7 || a8 ) ) || a9 ) && master.grounded ) master.currentJump = 0;
         if (master.grounded) master.onAirTime = 0;
         #endregion
 
         #region Dash
-        if (master.inputs.circle_tick) SetNewState(States.dash, 0);
+        if (!a7 && !a8 && !a9 && !a12)
+        {
+            if (master.inputs.circle_tick) SetNewState(States.dash, 0);
+        }
         #endregion
     }
 }

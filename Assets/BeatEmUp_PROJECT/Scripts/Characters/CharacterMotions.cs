@@ -15,7 +15,10 @@ public class CharacterMotions : MonoBehaviour
 
     public void MasterMoveCharacter(){
         Vector2 runVel = new Vector2(master.facingRight ? master.moveSpeed : -master.moveSpeed, master.body.velocity.y);
-        Vector2 dashVel = new Vector2(master.facingRight ? master.dashSpeed : -Mathf.Abs(master.dashSpeed), master.body.velocity.y);
+        if (master.onAirTime > 0) runVel.x = runVel.x * master.airMovilityMultiply;
+
+        var vel = master.dashSpeed.Evaluate(master.skeletonAnimation.state.GetCurrent(0).AnimationTime);
+        Vector2 dashVel = new Vector2(master.facingRight ? vel : -Mathf.Abs(vel), master.body.velocity.y);
 
         var anim = master.animator;
 
@@ -23,47 +26,39 @@ public class CharacterMotions : MonoBehaviour
 
         if (cancel) runVel = new Vector2(0, master.body.velocity.y);
 
-        if (!anim.a12)
-        {
-            master.body.velocity = runVel;
-        }
-        else
-        {
-            master.body.velocity = dashVel;
-        }
+        if (!anim.a12) master.body.velocity = runVel;
+
+        if (anim.a12) master.body.velocity = dashVel;
     }
 
-    public void AnimationEventJump()
+    public void MasterJump()
     {
         master.body.velocity = new Vector2(master.body.velocity.x, master.jumpSpeed);
     }
 
     public void MasterHandleGravity()
     {
-        bool a = (master.animator.a7 || master.animator.a8 || master.animator.a9) && master.body.velocity.y <= -MathF.Abs(master.maxFallSpeed);
-        if (a) master.body.velocity = new Vector2(master.body.velocity.x, -MathF.Abs(master.maxFallSpeed));//Clamp
-        if (!master.animator.a7 && !master.animator.a8) master.body.gravityScale = master.normalGravity;//Normal Gravity
+        float gravity = master.body.gravityScale;
 
         if (master.animator.a7 || master.animator.a8)
         {
-            if (master.onAirTime <= 10)
+            if (master.onAirTime <= 0.2f)
             {
-                if (!master.inputs.cross_hold)
-                {
-                    if (master.onAirTime > 0)
-                    {
-                        master.body.gravityScale = master.shortGravity;
-                    }
-                }
-                else
-                {
-                    master.body.gravityScale = master.normalGravity;
-                }
+                if (!master.inputs.cross_hold && master.onAirTime > 0) gravity = master.shortGravity;
+
+                if (master.inputs.cross_hold) gravity = master.normalGravity;
             }
         }
         else
         {
-            master.body.gravityScale = master.normalGravity;
+            gravity = master.normalGravity;
+        }
+
+        master.body.gravityScale = gravity;
+
+        if (master.body.velocity.y < -MathF.Abs(master.maxFallSpeed))
+        {
+            master.body.velocity = new Vector2(master.body.velocity.x, -MathF.Abs(master.maxFallSpeed));
         }
     }
 }
