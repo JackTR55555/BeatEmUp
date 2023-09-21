@@ -41,7 +41,9 @@ public class Master : MonoBehaviour
 
     bool CheckGround()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(pushbox.bounds.center, pushbox.bounds.size, 0, Vector2.down, 0.3f, ~grounderIgnore);
+        if (body.velocity.y > 0 && onAirTime > 0) return false;
+
+        RaycastHit2D hit = Physics2D.BoxCast(pushbox.bounds.center + new Vector3(0, -4), new Vector2(pushbox.bounds.size.x, 2), 0, Vector2.down, 0.5f, ~grounderIgnore);
 
         bool b = hit != false ? hit.collider.CompareTag("Landable") : false;
 
@@ -65,7 +67,7 @@ public class Master : MonoBehaviour
         {
             if (item.event1Triggered)
             {
-                camShaker.Shake(4, 0.1f);
+                camShaker.Shake(2, 0.1f);
             }
         }
     }
@@ -128,6 +130,7 @@ public class CoreAnims
 {
     [SpineAnimation] public string anim;
     public float animationTime;
+    public AnimationCurve speedOverTime;
     [SpineEvent(dataField: "skeletonAnimation", fallbackToTextField: true)]
     public string event1;
     public Spine.EventData event1Data;

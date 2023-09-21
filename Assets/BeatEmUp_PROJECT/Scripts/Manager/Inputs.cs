@@ -87,6 +87,8 @@ public class Inputs : MonoBehaviour
             triangle_hold = myMouse.leftButton.isPressed;
         }
         #endregion
+        #region Vibraor
+        #endregion
     }
 
     private void Update()
