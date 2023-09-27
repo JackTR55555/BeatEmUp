@@ -25,6 +25,13 @@ public class CharacterAnimator : MonoBehaviour
     [HideInInspector] public bool a16;
     #endregion
 
+    [Header("Events")]
+    [SpineEvent(dataField: "skeletonAnimation", fallbackToTextField: true)]
+    public string orientateEvent;
+    public Spine.EventData orientateEventData;
+    [SpineEvent(dataField: "skeletonAnimation", fallbackToTextField: true)]
+    public string cameraShakeEvent;
+    public Spine.EventData cameraShakeEventData;
     [Header("Transitions")]
     [SpineAnimation] public string actionIdleToNeutralIdle;
     [SpineAnimation] public string actionIdleToRun;
@@ -185,7 +192,7 @@ public class CharacterAnimator : MonoBehaviour
         currentState = toState;
     }
 
-    void RecalculateFacing()
+    public void RecalculateFacing()
     {
         if (master.inputs.myLeftStick.x > 0.2f) master.facingRight = true;
         if (master.inputs.myLeftStick.x < -0.2f) master.facingRight = false;
@@ -286,7 +293,7 @@ public class CharacterAnimator : MonoBehaviour
         }
         #endregion
 
-        #region Bleeding Edge
+        #region 4 Fombo mode
         if (a1 || a2 || a3 || a4 || a5 || a6 || a10 || a11)
         {
             if (master.inputs.triangle_tick) SetNewState(States.Combo1, 0);

@@ -53,23 +53,11 @@ public class Master : MonoBehaviour
     void HandleAnimationStateEvent(Spine.TrackEntry trackEntry, Spine.Event e)
     {
         //Jump
-        bool jumpEventChecked = (motions.jumpEventData == e.Data);
-        if (jumpEventChecked) motions.MasterJump();
+        if (motions.jumpEventData == e.Data) motions.MasterJump();
         //Attack Cores
-        foreach (var item in AttackCores)
-        {
-            foreach (var item2 in item.anims)
-            {
-                item2.event1Triggered = item2.event1Data == e.Data;
-            }
-        }
-        foreach (var item in AttackCores[activeAttackCore].anims)
-        {
-            if (item.event1Triggered)
-            {
-                camShaker.Shake(2, 0.1f);
-            }
-        }
+        if (animator.cameraShakeEventData == e.Data) camShaker.Shake(2, 0.1f);
+        //Orientate
+        if (animator.orientateEventData == e.Data) animator.RecalculateFacing();
     }
 
     private void Start()
@@ -87,16 +75,12 @@ public class Master : MonoBehaviour
         motions.master = this;
         skinManager.master = this;
 
-        //Attack Cores
-        foreach (var item in AttackCores)
-        {
-            foreach (var item2 in item.anims)
-            {
-                item2.event1Data = skeletonAnimation.skeleton.Data.FindEvent(item2.event1);
-            }
-        }
         motions.jumpEventData = skeletonAnimation.Skeleton.Data.FindEvent(motions.jumpEvent);
-        
+
+        animator.cameraShakeEventData = skeletonAnimation.Skeleton.Data.FindEvent(animator.cameraShakeEvent);
+
+        animator.orientateEventData = skeletonAnimation.Skeleton.Data.FindEvent(animator.orientateEvent);
+
         skeletonAnimation.AnimationState.Event += HandleAnimationStateEvent;
     }
 
@@ -131,8 +115,4 @@ public class CoreAnims
     [SpineAnimation] public string anim;
     public float animationTime;
     public AnimationCurve speedOverTime;
-    [SpineEvent(dataField: "skeletonAnimation", fallbackToTextField: true)]
-    public string event1;
-    public Spine.EventData event1Data;
-    public bool event1Triggered;
 }
