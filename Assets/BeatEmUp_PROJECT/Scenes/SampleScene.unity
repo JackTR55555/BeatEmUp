@@ -1448,7 +1448,7 @@ MonoBehaviour:
   airMovilityMultiply: 1.3
   activeDefenseCore: 0
   activeFunctionCore: 0
-  activeAttackCore: 0
+  activeAttackCore: 3
   DefenseCores:
   - coreName: 
     Owned: 0
