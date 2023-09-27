@@ -42,7 +42,7 @@ public class Master : MonoBehaviour
     {
         if (body.velocity.y > 0 && onAirTime > 0) return false;
 
-        RaycastHit2D hit = Physics2D.BoxCast(pushbox.bounds.center + new Vector3(0, -4), new Vector2(pushbox.bounds.size.x, 2), 0, Vector2.down, 0.5f, ~grounderIgnore);
+        RaycastHit2D hit = Physics2D.BoxCast(pushbox.bounds.center + new Vector3(0, -2), new Vector2(pushbox.bounds.size.x, 1), 0, Vector2.down, 0.2f, ~grounderIgnore);
 
         bool b = hit != false ? hit.collider.CompareTag("Landable") : false;
 
