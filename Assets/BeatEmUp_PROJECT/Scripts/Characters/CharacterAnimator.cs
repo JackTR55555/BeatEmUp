@@ -213,12 +213,13 @@ public class CharacterAnimator : MonoBehaviour
         a10 = master.skeletonAnimation.AnimationState.ToString()    == land;
         a11 = master.skeletonAnimation.AnimationState.ToString()    == landToRun;
         a12 = master.skeletonAnimation.AnimationState.ToString()    == dash;
-        //Sword Combos
-        a13 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[0].anim;
-        a14 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[1].anim;
-        a15 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[2].anim;
-        a16 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[3].anim;
-
+        //Combos
+        int siz = master.AttackCores[master.activeAttackCore].anims.Length;
+        if (siz > 0) a13 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[0].anim;
+        if (siz > 1) a14 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[1].anim;
+        if (siz > 2) a15 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[2].anim;
+        if (siz > 3) a16 = master.skeletonAnimation.AnimationState.ToString()    == master.AttackCores[master.activeAttackCore].anims[3].anim;
+        //Animations Time
         foreach (var item in master.AttackCores[master.activeAttackCore].anims)
         {
             if (master.skeletonAnimation.AnimationState.ToString() == item.anim)
@@ -248,34 +249,21 @@ public class CharacterAnimator : MonoBehaviour
         #endregion
 
         #region Jumps
-        bool ct = master.onAirTime < master.coyoteTime && a9;
         if (master.grounded)
         {
             if (a1 || a2 || a3 || a4 || a5 || a6 || a11 || a10 || a11 || a12)
             {
-                if (Mathf.Abs(master.inputs.myLeftStick.x) > 0.2f)
-                {
-                    if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
-                }
-                else
-                {
-                    if (master.inputs.cross_tick) SetNewState(States.jumpUp, 0);
-                }
+                var st = Mathf.Abs(master.inputs.myLeftStick.x);
+                if (master.inputs.cross_tick) SetNewState(st > 0.2f ? States.jumpFw : States.jumpUp, 0);
                 if (master.inputs.cross_tick) master.currentJump += 1;
             }
         }
         else
         {
-            if (ct)
+            if (master.currentJump < master.maxJumps)
             {
-                if (Mathf.Abs(master.inputs.myLeftStick.x) > 0.2f)
-                {
-                    if (master.inputs.cross_tick) SetNewState(States.jumpFw, 0);
-                }
-                else
-                {
-                    if (master.inputs.cross_tick) SetNewState(States.jumpUp, 0);
-                }
+                var st = Mathf.Abs(master.inputs.myLeftStick.x);
+                if (master.inputs.cross_tick) SetNewState(st > 0.2f ? States.jumpFw : States.jumpUp, 0);
                 if (master.inputs.cross_tick) master.currentJump += 1;
             }
         }
@@ -293,22 +281,22 @@ public class CharacterAnimator : MonoBehaviour
         }
         #endregion
 
-        #region 4 Fombo mode
+        #region Combo
         if (a1 || a2 || a3 || a4 || a5 || a6 || a10 || a11)
         {
-            if (master.inputs.triangle_tick) SetNewState(States.Combo1, 0);
+            if (master.inputs.triangle_tick && siz > 0) SetNewState(States.Combo1, 0);
         }
         if (a13)
         {
-            if (master.inputs.triangle_tick) SetNewState(States.Combo2, 0);
+            if (master.inputs.triangle_tick && siz > 1) SetNewState(States.Combo2, 0);
         }
         if (a14)
         {
-            if (master.inputs.triangle_tick) SetNewState(States.Combo3, 0);
+            if (master.inputs.triangle_tick && siz > 2) SetNewState(States.Combo3, 0);
         }
         if (a15)
         {
-            if (master.inputs.triangle_tick) SetNewState(States.Combo4, 0);
+            if (master.inputs.triangle_tick && siz > 3) SetNewState(States.Combo4, 0);
         }
         #endregion
     }

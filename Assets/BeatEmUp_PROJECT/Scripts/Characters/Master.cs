@@ -24,7 +24,6 @@ public class Master : MonoBehaviour
     public byte moveSpeed;
     public AnimationCurve dashSpeed;
     public byte jumpSpeed;
-    public float coyoteTime;
     public byte normalGravity;
     public byte shortGravity;
     public byte maxFallSpeed;
