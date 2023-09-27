@@ -41,9 +41,7 @@ public class Master : MonoBehaviour
 
     bool CheckGround()
     {
-        if (body.velocity.y > 0 && onAirTime > 0) return false;
-
-        RaycastHit2D hit = Physics2D.BoxCast(pushbox.bounds.center + new Vector3(0, -4), new Vector2(pushbox.bounds.size.x, 2), 0, Vector2.down, 0.5f, ~grounderIgnore);
+        RaycastHit2D hit = Physics2D.BoxCast(pushbox.bounds.center, pushbox.bounds.size, 0, Vector2.down, 0.3f, ~grounderIgnore);
 
         bool b = hit != false ? hit.collider.CompareTag("Landable") : false;
 
@@ -55,9 +53,26 @@ public class Master : MonoBehaviour
         //Jump
         if (motions.jumpEventData == e.Data) motions.MasterJump();
         //Attack Cores
+<<<<<<< HEAD
         if (animator.cameraShakeEventData == e.Data) camShaker.Shake(2, 0.1f);
         //Orientate
         if (animator.orientateEventData == e.Data) animator.RecalculateFacing();
+=======
+        foreach (var item in AttackCores)
+        {
+            foreach (var item2 in item.anims)
+            {
+                item2.event1Triggered = item2.event1Data == e.Data;
+            }
+        }
+        foreach (var item in AttackCores[activeAttackCore].anims)
+        {
+            if (item.event1Triggered)
+            {
+                camShaker.Shake(4, 0.1f);
+            }
+        }
+>>>>>>> parent of e583162 (Update)
     }
 
     private void Start()
@@ -114,5 +129,12 @@ public class CoreAnims
 {
     [SpineAnimation] public string anim;
     public float animationTime;
+<<<<<<< HEAD
     public AnimationCurve speedOverTime;
+=======
+    [SpineEvent(dataField: "skeletonAnimation", fallbackToTextField: true)]
+    public string event1;
+    public Spine.EventData event1Data;
+    public bool event1Triggered;
+>>>>>>> parent of e583162 (Update)
 }

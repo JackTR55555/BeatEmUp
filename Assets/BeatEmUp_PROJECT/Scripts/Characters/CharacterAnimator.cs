@@ -62,14 +62,17 @@ public class CharacterAnimator : MonoBehaviour
                 if (currentState == States.run)
                 {
                     master.skeletonAnimation.AnimationState.SetAnimation(layer, runToActionIdle, false);
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdle, true, 0);
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 3);
+                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 0);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
                 }
                 else if (currentState == States.dash)
                 {
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdle, true, 0);
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 3);
+                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 0);
+                    master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
+                }
+                else if (currentState == States.actionIdle)
+                {
+                    master.skeletonAnimation.AnimationState.SetAnimation(layer, actionIdleToNeutralIdle, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
                 }
                 else if (currentState == States.land)
@@ -78,26 +81,22 @@ public class CharacterAnimator : MonoBehaviour
                 }
                 else if (currentState == States.Combo1)
                 {
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdle, true, 0);
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 3);
+                    master.skeletonAnimation.AnimationState.SetAnimation(layer, actionIdleToNeutralIdle, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
                 }
                 else if (currentState == States.Combo2)
                 {
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdle, true, 0);
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 3);
+                    master.skeletonAnimation.AnimationState.SetAnimation(layer, actionIdleToNeutralIdle, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
                 }
                 else if (currentState == States.Combo3)
                 {
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdle, true, 0);
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 3);
+                    master.skeletonAnimation.AnimationState.SetAnimation(layer, actionIdleToNeutralIdle, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
                 }
                 else if (currentState == States.Combo4)
                 {
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdle, true, 0);
-                    master.skeletonAnimation.AnimationState.AddAnimation(layer, actionIdleToNeutralIdle, false, 3);
+                    master.skeletonAnimation.AnimationState.SetAnimation(layer, actionIdleToNeutralIdle, false);
                     master.skeletonAnimation.AnimationState.AddAnimation(layer, neutralIdle, true, 0);
                 }
                 else
